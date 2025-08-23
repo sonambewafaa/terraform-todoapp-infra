@@ -13,6 +13,13 @@ module "rg" {
   rg_tags     = local.common_tags
 }
 
+module "rg1" {
+  source      = "../../modules/azurerm_resource_group"
+  rg_name     = "rg-dev-todoapp1"
+  rg_location = "centralindia"
+  rg_tags     = local.common_tags
+}
+
 module "acr" {
   depends_on = [module.rg]
   source     = "../../modules/azurerm_container_registry"
