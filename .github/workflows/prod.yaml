@@ -1,0 +1,77 @@
+name: "Prod Terraform Workflow"
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main      
+
+permissions:
+  id-token: write
+  contents: read
+  
+jobs: 
+  terraform-init-plan:
+    runs-on: self-hosted
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v5.0.0
+    
+      - name: Azure Login
+        uses: Azure/login@v2.3.0
+        with:
+          client-id: ff27bcf6-f60c-4a57-8b01-8eee5de2a9cd
+          tenant-id: 0f7010fd-209e-4344-8457-043ffb37143b
+          subscription-id: 1075ec7a-b17a-4f37-bf3f-9d68c4506dc1
+            
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+        working-directory: environments/prod
+        
+      - name: Terraform Init
+        id: init
+        run: terraform init -input=false  
+        working-directory: environments/prod
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+        working-directory: environments/prod        
+      
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color -input=false
+        continue-on-error: true
+        working-directory: environments/prod    
+        
+  terraform-apply:    
+    runs-on: self-hosted
+    if: github.ref == 'refs/heads/main'
+    needs: terraform-init-plan
+    environment: prod
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5.0.0
+    
+      - name: Azure Login
+        uses: Azure/login@v2.3.0
+        with:
+          client-id: ff27bcf6-f60c-4a57-8b01-8eee5de2a9cd
+          tenant-id: 0f7010fd-209e-4344-8457-043ffb37143b
+          subscription-id: 1075ec7a-b17a-4f37-bf3f-9d68c4506dc1   
+          
+      - name: Terraform Init
+        id: init
+        run: terraform init -input=false  
+        working-directory: environments/prod
+
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply --auto-approve
+        continue-on-error: true
+        working-directory: environments/prod              
+          
