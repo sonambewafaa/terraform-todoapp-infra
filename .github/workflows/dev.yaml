@@ -14,7 +14,7 @@ permissions:
   
 jobs: 
   terraform-init-plan:
-    runs-on: mishra-runner
+    runs-on: self-hosted
     steps: 
       - name: Checkout
         uses: actions/checkout@v5.0.0
