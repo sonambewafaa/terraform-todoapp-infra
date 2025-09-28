@@ -5,15 +5,15 @@ terraform {
       version = "4.41.0"
     }
   }
-  backend "azurerm" {
-    resource_group_name  = "rg-devopsinsiders"
-    storage_account_name = "twostates"
-    container_name       = "tfstate"
-    key                  = "dev.tfstate"
-  }
+  #backend "azurerm" {
+   # resource_group_name  = "rg-devopsinsiders"
+    #storage_account_name = "twostates"
+    #container_name       = "tfstate"
+    #key                  = "dev.tfstate"
+  #}
 }
 
 provider "azurerm" {
   features {}
-  subscription_id = "1075ec7a-b17a-4f37-bf3f-9d68c4506dc1"
+  subscription_id = "88fc7642-e677-4cd7-b276-4d2f8cc6ad1d"
 }

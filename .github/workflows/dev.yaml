@@ -14,7 +14,7 @@ permissions:
   
 jobs: 
   terraform-init-plan:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps: 
       - name: Checkout
         uses: actions/checkout@v5.0.0
@@ -22,10 +22,14 @@ jobs:
       - name: Azure Login
         uses: Azure/login@v2.3.0
         with:
-          client-id: ff27bcf6-f60c-4a57-8b01-8eee5de2a9cd
-          tenant-id: 0f7010fd-209e-4344-8457-043ffb37143b
-          subscription-id: 1075ec7a-b17a-4f37-bf3f-9d68c4506dc1
-            
+          client-id: 4d2d10f7-cebb-42e9-8ee1-0ca62c853716
+          tenant-id: bb4715b0-c05c-42be-aad4-215aee09dc05
+          subscription-id: 88fc7642-e677-4cd7-b276-4d2f8cc6ad1d
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.6.0  # Specify your Terraform version
+      
       - name: Terraform fmt
         id: fmt
         run: terraform fmt -check
@@ -60,9 +64,9 @@ jobs:
       - name: Azure Login
         uses: Azure/login@v2.3.0
         with:
-          client-id: ff27bcf6-f60c-4a57-8b01-8eee5de2a9cd
-          tenant-id: 0f7010fd-209e-4344-8457-043ffb37143b
-          subscription-id: 1075ec7a-b17a-4f37-bf3f-9d68c4506dc1   
+          client-id: 4d2d10f7-cebb-42e9-8ee1-0ca62c853716
+          tenant-id: bb4715b0-c05c-42be-aad4-215aee09dc05
+          subscription-id: 88fc7642-e677-4cd7-b276-4d2f8cc6ad1d 
           
       - name: Terraform Init
         id: init
